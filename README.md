@@ -1,6 +1,6 @@
 # searching-BIC-of-Target-wavelength-window-of-Photonics-crystal
 BIC Photonic Crystal Cavity Designer
-Overview
+## Overview
 
 This project is a Bayesian-optimization-assisted photonic-crystal cavity design program built on top of Legume, the guided-mode expansion (GME) package developed within the fancompute / Fan Group ecosystem. Legume is a Python implementation of guided-mode expansion for photonic-crystal slabs and multilayer structures, and it also includes plane-wave expansion tools for purely 2D periodic systems.
 
@@ -8,7 +8,7 @@ The code is designed for fast screening of square-lattice photonic-crystal slab 
 
 At present, this workflow supports non-dispersive, constant-index material models only. In other words, the slab and hole/background media are specified through fixed refractive indices (n_slab, n_hole) rather than wavelength-dependent n(λ) or k(λ). This makes the program well suited to preliminary photonic-crystal design using fixed-index approximations of materials such as Si3N4 in the visible, Si in the infrared, and TiO2 over a limited spectral range. Materials such as VO2 can also be explored at the constant-index approximation level, but the present code does not yet include a native dispersive or lossy material model.
 
-Design Philosophy
+## Design Philosophy
 
 The core idea of this repository is to accelerate BIC screening without sacrificing the physical logic of the cavity search. Instead of performing an expensive dense scan of the full parameter space at high fidelity from the beginning, the code uses a staged workflow:
 
@@ -22,7 +22,7 @@ Optional fabrication-tolerance robustness screening
 
 This staged design significantly reduces the number of expensive eigenmode calculations needed to identify a usable BIC cavity candidate. The script explicitly implements Bayesian optimization through skopt.Optimizer, and it records BO prediction error, uncertainty coverage, and refinement history as part of the output.
 
-Main Features
+## Main Features
 1. Fast BIC screening in a target wavelength window
 
 The program solves Γ-point modes for each scan point, converts normalized frequencies into physical wavelengths, and checks whether the geometry supports a candidate resonance inside the user-defined wavelength interval. By default, the code is organized around a target window such as 520–540 nm, but any wavelength range can be specified through command-line arguments. It computes the number of resonances in the window and the number of low-loss, high-Q candidates in that same window.
@@ -47,7 +47,7 @@ For the best shortlisted candidates, the code can estimate an approximate unit-c
 
 The program can apply a small Monte Carlo fabrication-robustness screen around the final candidates by perturbing the period, hole radius, and slab thickness and then recomputing the Γ-point screening metrics. This yields a simple measure of robustness, including a nominal score, a mean score, a standard deviation, a lower quantile, and an estimated yield fraction.
 
-Supported Material Scope
+## Supported Material Scope
 
 This repository currently targets constant-index dielectric photonic-crystal slab design. Typical use cases include:
 
@@ -58,7 +58,7 @@ VO2 only under a fixed-index approximation over a narrow design window
 
 Because the material model is currently non-dispersive, the code is most reliable when the design wavelength range is narrow enough that a constant effective refractive index is a good approximation. For strongly dispersive or absorptive materials, the next natural extension is to add wavelength-dependent n(λ) and k(λ) support.
 
-Software Requirements
+## Software Requirements
 
 The script directly imports:
 
@@ -79,7 +79,7 @@ SciencePlots==2.2.1 (optional, for publication-style figures)
 
 The latest PyPI package pages currently list legume-gme 1.0.2, scikit-optimize 0.10.2, and SciencePlots 2.2.1. SciencePlots also requires an explicit import scienceplots before plt.style.use(...) in modern versions.
 
-Installation
+## Installation
 conda create -n bic-legume python=3.11
 conda activate bic-legume
 
@@ -89,7 +89,7 @@ pip install SciencePlots==2.2.1
 
 If you do not need the enhanced plotting style, SciencePlots can be omitted and the script will fall back to standard Matplotlib styling. The current code already handles that case by wrapping import scienceplots in a try/except block.
 
-Usage
+## Usage
 
 The script exposes a command-line interface for selecting the design wavelength window, scan mode, polarization family, geometry range, Bayesian optimization budget, refinement settings, validation settings, and output directory. Its CLI description explicitly states that it performs a physically constrained coarse scan near Γ, then optional refinement, and then a short Γ-centered validation path.
 
@@ -154,7 +154,7 @@ Repeat the final run with stricter settings to confirm convergence.
 
 For future development, an even more rigorous strategy would be to validate the selected candidate in a 2D neighborhood around Γ, rather than only on a single short path.
 
-Output Files
+## Output Files
 
 A successful run produces a timestamped output directory containing numerical results, summary files, and figures. The script explicitly saves:
 
@@ -173,7 +173,7 @@ bic_example_gamma_dispersion.png
 
 These outputs are generated directly by the main workflow after the search, validation, and robustness stages complete.
 
-Figure Types
+## Figure Types
 BIC phase diagram
 
 This figure shows the scan results in the selected parameter plane. It distinguishes regions with no target-window Γ-point BIC, regions where a Γ-point BIC exists but the target window is not spectrally isolated, and regions where the design window contains exactly one target mode and one BIC candidate.
