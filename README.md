@@ -214,7 +214,7 @@ Which square-lattice photonic-crystal slab geometry places an isolated, high-Q B
 
 That is exactly the task this code is designed to accelerate.
 
-Citation and Acknowledgment
+## Citation and Acknowledgment
 
 If you use this repository in academic work, please acknowledge:
 
